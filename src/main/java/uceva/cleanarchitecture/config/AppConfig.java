@@ -2,12 +2,16 @@ package uceva.cleanarchitecture.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import uceva.cleanarchitecture.application.usecase.GetAllCoursesUseCase;
 import uceva.cleanarchitecture.application.usecase.GetAllProductsUseCase;
 import uceva.cleanarchitecture.application.usecase.GetAllUsersUseCase;
+import uceva.cleanarchitecture.domain.repository.CourseRepository;
 import uceva.cleanarchitecture.domain.repository.ProductRepository;
 import uceva.cleanarchitecture.domain.repository.UserRepository;
+import uceva.cleanarchitecture.infrastructure.datasource.CourseDatasource;
 import uceva.cleanarchitecture.infrastructure.datasource.ProductDatasource;
 import uceva.cleanarchitecture.infrastructure.datasource.UserDatasource;
+import uceva.cleanarchitecture.infrastructure.repository.CourseRepositoryImpl;
 import uceva.cleanarchitecture.infrastructure.repository.ProductRepositoryImpl;
 import uceva.cleanarchitecture.infrastructure.repository.UserRepositoryImpl;
 
@@ -25,6 +29,11 @@ public class AppConfig {
     }
 
     @Bean
+    CourseDatasource courseDatasource(){
+        return new CourseDatasource();
+    }
+
+    @Bean
     UserRepository userRepository(UserDatasource userDatasource) {
         return new UserRepositoryImpl(userDatasource);
     }
@@ -35,6 +44,11 @@ public class AppConfig {
     }
 
     @Bean
+    CourseRepository courseRepository(CourseDatasource courseDatasource) {
+        return new CourseRepositoryImpl(courseDatasource);
+    }
+
+    @Bean
     GetAllUsersUseCase getAllUsersUseCase(UserRepository userRepository) {
         return new GetAllUsersUseCase(userRepository);
     }
@@ -42,6 +56,11 @@ public class AppConfig {
     @Bean
     GetAllProductsUseCase getAllProductsUseCase(ProductRepository productRepository) {
         return new GetAllProductsUseCase(productRepository);
+    }
+
+    @Bean
+    GetAllCoursesUseCase getAllCoursesUseCase(CourseRepository courseRepository) {
+        return new GetAllCoursesUseCase(courseRepository);
     }
 
 }
